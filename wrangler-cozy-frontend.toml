@@ -1,0 +1,4 @@
+name = "cozy-frontend"
+main = "cozy-frontend-worker.js"
+compatibility_date = "2025-01-01"
+account_id = "599cb66ab5c235bb62eb59dc77ed2f42"

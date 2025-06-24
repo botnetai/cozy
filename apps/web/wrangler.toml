@@ -1,0 +1,15 @@
+name = "cozy-frontend"
+main = "./dist/server/index.js"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+[site]
+bucket = "./dist/client"
+
+[build]
+command = "bun run build"
+
+# Environment variables
+[vars]
+ENVIRONMENT = "production"
+API_URL = "https://cozy-worker.jeremycai.workers.dev"

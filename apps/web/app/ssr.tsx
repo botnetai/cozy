@@ -6,6 +6,6 @@ import { getRouterManifest } from '@tanstack/start/router-manifest'
 import { router } from './router'
 
 export default createStartHandler({
-  router,
+  createRouter: () => router,
   getRouterManifest,
 })(defaultStreamHandler)

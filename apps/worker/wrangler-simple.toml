@@ -1,0 +1,7 @@
+name = "cozy-backend"
+main = "worker-simple.js"
+compatibility_date = "2025-01-01"
+account_id = "599cb66ab5c235bb62eb59dc77ed2f42"
+
+[vars]
+ENVIRONMENT = "production"

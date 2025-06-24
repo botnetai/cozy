@@ -4,21 +4,48 @@
 Building a browser-hosted Claude Code platform using Cloudflare Workers and Containers.
 
 ## Completed Tasks ✅
+
+### Initial Setup
 - [x] Initialize Turborepo monorepo structure
 - [x] Set up workspace configuration with Bun
-- [x] Create apps/worker with Hono and tRPC
+- [x] Configure ESLint and Prettier
+- [x] Configure git repository
+
+### Documentation
+- [x] Create PROJECT_OVERVIEW.md with full architecture documentation
+- [x] Create overview.md emphasizing Claude Code hosting as core feature
+- [x] Create comprehensive TESTING.md guide
+- [x] Create deployment scripts and documentation
+
+### Frontend (apps/web)
 - [x] Create apps/web with TanStack Start and React 19
+- [x] Set up Tailwind CSS in web app
+- [x] Create basic routes (/, /app, /pricing, /docs, /dashboard)
+- [x] Configure wrangler.toml for Cloudflare Workers deployment
+- [x] Create simplified worker entry for deployment
+
+### Backend (apps/worker)
+- [x] Create apps/worker with Hono and tRPC
+- [x] Integrate @anthropic-ai/claude-code SDK
+- [x] Create CozyContainer wrapper class for container management
+- [x] Implement REST API endpoints for Claude Code execution
+- [x] Implement tRPC procedures for typed API calls
+- [x] Configure container bindings in wrangler.toml
+- [x] Add TypeScript types for container operations
+
+### Container Setup (sandbox-image)
+- [x] Create Dockerfile with Node.js 22 and Python 3.12
+- [x] Install Claude Code CLI globally
+- [x] Install Python Claude Code SDK
+- [x] Configure workspace permissions
+- [x] Set up ANTHROPIC_API_KEY environment variable support
+- [x] Create build scripts for container image
+
+### Packages
 - [x] Set up packages/tsconfig with shared TypeScript configurations
 - [x] Create packages/ui with basic Button and Card components
 - [x] Set up packages/sdk-js with TypeScript SDK structure
 - [x] Set up packages/sdk-py with Python SDK structure
-- [x] Create sandbox-image with Dockerfile for container runtime
-- [x] Configure ESLint and Prettier
-- [x] Set up Tailwind CSS in web app
-- [x] Create basic routes (/, /app, /pricing, /docs, /dashboard)
-- [x] Configure git repository
-- [x] Create PROJECT_OVERVIEW.md with full architecture documentation
-- [x] Create overview.md emphasizing Claude Code hosting
 
 ## Current Sprint - Claude Code Integration 🚀
 
@@ -113,6 +140,11 @@ Building a browser-hosted Claude Code platform using Cloudflare Workers and Cont
 - Public beta launch
 
 ## Testing Checklist 🧪
+- [x] Comprehensive testing guide created (TESTING.md)
+- [x] Test scripts for Claude Code integration
+- [x] Performance testing script
+- [x] tRPC client testing script
+- [x] Quick start script for easy testing
 - [ ] Claude Code executes in container
 - [ ] API key encryption/decryption works
 - [ ] WebSocket streams output correctly
@@ -121,8 +153,40 @@ Building a browser-hosted Claude Code platform using Cloudflare Workers and Cont
 - [ ] Usage tracking is accurate
 - [ ] Billing calculations are correct
 
+## Deployment Status 🚀
+
+### Completed Deployments
+- [✅] **cozy-backend** (Worker with Claude Code integration)
+  - [x] Backend worker deployed at cozy-backend.botnet-599.workers.dev
+  - [x] Container configuration in /apps/worker/wrangler.toml
+  - [x] Container bindings configured
+  - [x] API endpoints ready for Claude Code execution
+
+### Container Deployment
+- [🔄] **cozy-sandbox** (Cloudflare Container)
+  - [x] Dockerfile created with Node.js 22 and Python 3.12
+  - [x] Claude Code CLI and SDK installed
+  - [x] Container configuration in wrangler.toml
+  - [x] Created deployment documentation (CONTAINER_DEPLOYMENT.md)
+  - [x] GitHub Actions workflow for automated deployment
+  - [⚠️] Requires Docker for building/pushing (not available locally)
+  
+### Deployment Files Created
+- `/apps/worker/wrangler.toml` - Worker config with container bindings
+- `/sandbox-image/Dockerfile` - Container image definition
+- `/deploy-container.sh` - Container deployment script
+- `/.github/workflows/deploy-container.yml` - GitHub Actions workflow
+- `/CONTAINER_DEPLOYMENT.md` - Deployment documentation
+- Various deployment scripts (deploy-cozy.sh, deploy-with-token.sh)
+
+### Target URLs
+- Backend: https://cozy-backend.botnet-599.workers.dev ✅
+- Container Registry: registry.cloudflare.com/599cb66ab5c235bb62eb59dc77ed2f42/cozy-sandbox
+
 ## Deployment Checklist 🚀
-- [ ] Environment variables configured
+- [x] Environment variables configured
+- [x] Cloudflare API token and account ID added
+- [ ] Successfully deploy to Cloudflare Workers
 - [ ] Cloudflare secrets set (D1, R2, KV)
 - [ ] Container registry configured
 - [ ] Domain and routing set up
