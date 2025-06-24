@@ -1,0 +1,11 @@
+{
+  "name": "@cozy/sandbox-image",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "./build.sh",
+    "build:local": "docker build -t cozy-sandbox .",
+    "push": "docker push registry.developers.cloudflare.com/${CLOUDFLARE_ACCOUNT_ID}/cozy-sandbox:latest",
+    "login": "echo $CLOUDFLARE_API_TOKEN | docker login registry.developers.cloudflare.com -u cloudflare --password-stdin"
+  }
+}

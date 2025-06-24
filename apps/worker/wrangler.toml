@@ -1,0 +1,39 @@
+name = "cozy-worker"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+# Enable node compatibility for certain modules
+node_compat = true
+
+# Container bindings configuration
+[[containers]]
+binding = "CONTAINER"
+image = "cozy-sandbox"
+tag = "latest"
+
+# Container configuration
+[containers.limits]
+memory = 1024  # 1 GiB
+cpu = 0.25     # ¼ vCPU
+
+[containers.env]
+NODE_ENV = "production"
+
+# Environment variables
+[vars]
+ENVIRONMENT = "development"
+
+# KV namespace bindings (example)
+# [[kv_namespaces]]
+# binding = "KV"
+# id = "your-kv-namespace-id"
+
+# Durable Object bindings (example)
+# [[durable_objects.bindings]]
+# name = "DO"
+# class_name = "DurableObject"
+
+# R2 bucket bindings (example)
+# [[r2_buckets]]
+# binding = "BUCKET"
+# bucket_name = "your-bucket-name"

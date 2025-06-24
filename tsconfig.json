@@ -1,0 +1,16 @@
+{
+  "extends": "@cozy/tsconfig/base.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "noEmit": true
+  },
+  "references": [
+    { "path": "./apps/worker" },
+    { "path": "./apps/web" },
+    { "path": "./packages/sdk-js" },
+    { "path": "./packages/ui" },
+    { "path": "./packages/tsconfig" }
+  ],
+  "exclude": ["node_modules"]
+}

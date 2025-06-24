@@ -1,0 +1,8 @@
+dist
+build
+.next
+.turbo
+node_modules
+*.min.js
+coverage
+.wrangler

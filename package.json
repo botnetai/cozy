@@ -1,0 +1,24 @@
+{
+  "name": "cozy",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "sandbox-image"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "format": "turbo run format",
+    "typecheck": "turbo run typecheck"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "turbo": "^2.5.4",
+    "prettier": "^3.4.2",
+    "eslint": "^9.18.0",
+    "typescript": "^5.8.3"
+  }
+}

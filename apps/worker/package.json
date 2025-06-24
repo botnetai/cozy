@@ -1,0 +1,29 @@
+{
+  "name": "@cozy/worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "tsc --noEmit",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-code": "^1.0.33",
+    "@cloudflare/containers": "^0.0.13",
+    "@trpc/client": "^11.0.1",
+    "@trpc/server": "^11.0.1",
+    "hono": "^4.7.5",
+    "superjson": "^2.2.2",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250122.0",
+    "@cozy/tsconfig": "workspace:*",
+    "wrangler": "^3.99.0",
+    "typescript": "^5.8.3"
+  }
+}
