@@ -7,5 +7,4 @@ import { router } from './router'
 
 export default createStartHandler({
   createRouter: () => router,
-  getRouterManifest,
 })(defaultStreamHandler)
