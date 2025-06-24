@@ -23,7 +23,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250122.0",
     "@cozy/tsconfig": "workspace:*",
-    "wrangler": "^3.99.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "wrangler": "^3.99.0"
   }
 }

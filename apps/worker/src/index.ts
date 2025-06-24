@@ -22,7 +22,12 @@ app.all('/trpc/*', async (c) => {
     endpoint: '/trpc',
     req: c.req.raw,
     router: appRouter,
-    createContext: () => createContext({ req: c.req.raw, env: c.env }),
+    createContext: async () => {
+      return {
+        env: c.env,
+        request: c.req.raw,
+      }
+    },
   })
 })
 

@@ -1,7 +1,10 @@
-name = "cozy-web"
+name = "cozy-frontend"
 main = "./worker.ts"
 compatibility_date = "2025-01-01"
-account_id = "3f83a47ede5b22c5ab36258d49013e06"
+account_id = "599cb66ab5c235bb62eb59dc77ed2f42"
+
+# Workers.dev subdomain deployment
+# Custom domain route will be added through dashboard
 
 [site]
 bucket = "./dist"

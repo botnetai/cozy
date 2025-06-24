@@ -29,11 +29,8 @@ export class CozyContainer {
   }
 
   async initialize(): Promise<void> {
-    // Set up environment variables
-    await this.setEnvironmentVariables({
-      ANTHROPIC_API_KEY: this.options.apiKey,
-      WORKSPACE_ID: this.options.workspaceId,
-    })
+    // Environment variables will be passed during exec calls
+    // No initialization needed for now
   }
 
   private async exec(options: {

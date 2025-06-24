@@ -23,10 +23,19 @@ export function ThemeProvider({
   storageKey = 'cozy-ui-theme',
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = React.useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
-  )
+  const [theme, setTheme] = React.useState<Theme>(defaultTheme)
+  const [mounted, setMounted] = React.useState(false)
 
+  // Handle initial theme on client side
+  React.useEffect(() => {
+    setMounted(true)
+    const savedTheme = localStorage.getItem(storageKey) as Theme
+    if (savedTheme) {
+      setTheme(savedTheme)
+    }
+  }, [storageKey])
+
+  // Apply theme to document
   React.useEffect(() => {
     const root = window.document.documentElement
 
@@ -47,9 +56,11 @@ export function ThemeProvider({
 
   const value = {
     theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme)
-      setTheme(theme)
+    setTheme: (newTheme: Theme) => {
+      setTheme(newTheme)
+      if (mounted) {
+        localStorage.setItem(storageKey, newTheme)
+      }
     },
   }
 

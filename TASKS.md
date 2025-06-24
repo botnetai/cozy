@@ -23,6 +23,10 @@ Building a browser-hosted Claude Code platform using Cloudflare Workers and Cont
 - [x] Create basic routes (/, /app, /pricing, /docs, /dashboard)
 - [x] Configure wrangler.toml for Cloudflare Workers deployment
 - [x] Create simplified worker entry for deployment
+- [x] Install and integrate Base UI (@mui/base) components
+- [x] Implement dark/light mode switcher with Base UI Switch component
+- [x] Set up SSR-compatible ThemeProvider with localStorage persistence
+- [x] Configure Vite build for Cloudflare Workers deployment
 
 ### Backend (apps/worker)
 - [x] Create apps/worker with Hono and tRPC
