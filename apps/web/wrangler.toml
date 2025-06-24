@@ -1,10 +1,10 @@
-name = "cozy-frontend"
-main = "./dist/server/index.js"
+name = "cozy-web"
+main = "./worker.ts"
 compatibility_date = "2025-01-01"
-compatibility_flags = ["nodejs_compat"]
+account_id = "3f83a47ede5b22c5ab36258d49013e06"
 
 [site]
-bucket = "./dist/client"
+bucket = "./dist"
 
 [build]
 command = "bun run build"

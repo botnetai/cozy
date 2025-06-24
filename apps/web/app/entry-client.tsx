@@ -1,11 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { StartClient } from '@tanstack/start'
+import { RouterProvider } from '@tanstack/react-router'
 import { router } from './router'
 
-const root = ReactDOM.hydrateRoot(
-  document,
+const rootElement = document.getElementById('root')!
+
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <StartClient router={router} />
+    <RouterProvider router={router} />
   </React.StrictMode>
 )

@@ -13,5 +13,12 @@ export default defineConfig({
   ],
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      input: './index.html',
+    },
+  },
+  ssr: {
+    target: 'webworker',
+    noExternal: true,
   },
 })
