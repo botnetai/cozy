@@ -1,0 +1,19 @@
+name = "cozy-worker"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+account_id = "599cb66ab5c235bb62eb59dc77ed2f42"
+
+# Container binding
+[browser]
+binding = "CONTAINER"
+image = "cozy-sandbox:latest"
+
+# Container configuration
+[containers]
+memory = 1024  # 1 GiB
+cpu = 0.25     # ¼ vCPU
+
+# Environment variables
+[vars]
+ENVIRONMENT = "production"
