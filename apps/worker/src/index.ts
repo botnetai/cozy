@@ -3,6 +3,7 @@ import { cors } from 'hono/cors'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 import { appRouter } from './trpc/router'
 import { createContext } from './trpc/context'
+import { getContainer } from '@cloudflare/containers'
 import type { Env, ClaudeCodeRequest, CodeExecutionRequest, FileOperation, ContainerResponse } from './types'
 
 const app = new Hono<{ Bindings: Env }>()
@@ -18,8 +19,7 @@ app.get('/health', (c) => {
 // Container routes - direct container access for testing
 app.get('/container/:id', async (c) => {
   const containerId = c.req.param('id')
-  const id = c.env.MY_CONTAINER.idFromName(containerId)
-  const container = c.env.MY_CONTAINER.get(id)
+  const container = getContainer(c.env.MY_CONTAINER, containerId)
   return await container.fetch(c.req.raw)
 })
 
@@ -27,8 +27,7 @@ app.get('/container/:id', async (c) => {
 app.get('/lb', async (c) => {
   // Simple random selection between 3 containers
   const randomId = Math.floor(Math.random() * 3)
-  const id = c.env.MY_CONTAINER.idFromName(`lb-${randomId}`)
-  const container = c.env.MY_CONTAINER.get(id)
+  const container = getContainer(c.env.MY_CONTAINER, `lb-${randomId}`)
   return await container.fetch(c.req.raw)
 })
 
@@ -64,9 +63,8 @@ app.post('/container/claude', async (c) => {
       }, 401)
     }
 
-    // Get Durable Object ID
-    const id = c.env.MY_CONTAINER.idFromName(workspaceId)
-    const container = c.env.MY_CONTAINER.get(id)
+    // Get container instance for the workspace
+    const container = getContainer(c.env.MY_CONTAINER, workspaceId)
     
     // Forward request to Durable Object
     const response = await container.fetch(new Request('http://container/claude', {
@@ -101,9 +99,8 @@ app.post('/container/execute', async (c) => {
     const apiKey = c.req.header('X-Anthropic-Api-Key') || ''
     const workspaceId = c.req.header('X-Workspace-Id') || 'default'
     
-    // Get Durable Object ID
-    const id = c.env.MY_CONTAINER.idFromName(workspaceId)
-    const container = c.env.MY_CONTAINER.get(id)
+    // Get container instance for the workspace
+    const container = getContainer(c.env.MY_CONTAINER, workspaceId)
     
     // Forward request to Durable Object
     const response = await container.fetch(new Request('http://container/execute', {
@@ -138,9 +135,8 @@ app.post('/container/file', async (c) => {
     const apiKey = c.req.header('X-Anthropic-Api-Key') || ''
     const workspaceId = c.req.header('X-Workspace-Id') || 'default'
     
-    // Get Durable Object ID
-    const id = c.env.MY_CONTAINER.idFromName(workspaceId)
-    const container = c.env.MY_CONTAINER.get(id)
+    // Get container instance for the workspace
+    const container = getContainer(c.env.MY_CONTAINER, workspaceId)
     
     // Forward request to Durable Object
     const response = await container.fetch(new Request('http://container/file', {
