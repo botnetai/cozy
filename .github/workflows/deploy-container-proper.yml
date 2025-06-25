@@ -19,10 +19,8 @@ jobs:
       with:
         node-version: '20'
     
-    - name: Install dependencies
-      working-directory: ./apps/worker
+    - name: Install wrangler
       run: |
-        npm install
         npm install -g wrangler@latest
     
     - name: Check Docker
