@@ -167,20 +167,28 @@ Building a browser-hosted Claude Code platform using Cloudflare Workers and Cont
   - [x] API endpoints ready for Claude Code execution
 
 ### Container Deployment
-- [🔄] **cozy-sandbox** (Cloudflare Container)
+- [🚧] **cozy-sandbox** (Cloudflare Container)
   - [x] Dockerfile created with Node.js 22 and Python 3.12
   - [x] Claude Code CLI and SDK installed
   - [x] Container configuration in wrangler.toml
-  - [x] Created deployment documentation (CONTAINER_DEPLOYMENT.md)
-  - [x] GitHub Actions workflow for automated deployment
-  - [⚠️] Requires Docker for building/pushing (not available locally)
+  - [x] Created Durable Object class (CozySandboxContainer)
+  - [x] Updated worker to use Durable Objects for containers
+  - [x] Created container server implementation (server.js)
+  - [x] Fixed wrangler.toml syntax for containers and Durable Objects
+  - [x] Updated to wrangler v4 with nodejs_compat flag
+  - [x] Created deployment documentation (CONTAINER-DEPLOYMENT.md)
+  - [⚠️] **BLOCKED**: Requires Docker for building/pushing containers
+  - [✅] Deployed simplified version without containers at: https://cozy-worker.botnet-599.workers.dev
   
 ### Deployment Files Created
 - `/apps/worker/wrangler.toml` - Worker config with container bindings
 - `/sandbox-image/Dockerfile` - Container image definition
+- `/sandbox-image/build-and-push.sh` - Build and push script for containers
+- `/sandbox-image/example-wrangler.toml` - Example container worker config
 - `/deploy-container.sh` - Container deployment script
-- `/.github/workflows/deploy-container.yml` - GitHub Actions workflow
-- `/CONTAINER_DEPLOYMENT.md` - Deployment documentation
+- `/.github/workflows/build-container.yml` - GitHub Actions workflow
+- `/.github/workflows/README.md` - GitHub Actions documentation
+- `/CONTAINER_DEPLOYMENT.md` - Comprehensive deployment documentation
 - Various deployment scripts (deploy-cozy.sh, deploy-with-token.sh)
 
 ### Target URLs

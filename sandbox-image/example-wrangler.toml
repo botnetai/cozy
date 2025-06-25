@@ -1,0 +1,36 @@
+# Example Wrangler configuration for container-based worker
+name = "cozy-sandbox-worker"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+# Account and deployment settings
+account_id = "599cb66ab5c235bb62eb59dc77ed2f42"
+
+# Container configuration
+[containers]
+# Use the latest version of the cozy-sandbox container
+image = "cozy-sandbox:latest"
+
+# Or use a specific version
+# image = "cozy-sandbox:abc123"
+
+# Environment variables
+[vars]
+ENVIRONMENT = "production"
+
+# Bindings (if needed)
+[[kv_namespaces]]
+binding = "KV"
+id = "your-kv-namespace-id"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "your-bucket-name"
+
+# Routes (optional)
+# route = "https://example.com/*"
+
+# Development settings
+[dev]
+port = 8787
+local_protocol = "http"

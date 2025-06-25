@@ -1,0 +1,11 @@
+name = "cozy-worker"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+account_id = "599cb66ab5c235bb62eb59dc77ed2f42"
+
+# Enable node compatibility for certain modules
+node_compat = true
+
+# Environment variables
+[vars]
+ENVIRONMENT = "production"

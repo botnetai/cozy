@@ -1,0 +1,31 @@
+name = "cozy-worker"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+account_id = "599cb66ab5c235bb62eb59dc77ed2f42"
+
+# Custom domain
+# route = "api.cozy.cloud/*"
+# Uncomment and add zone_id when deploying to custom domain
+# [[routes]]
+# pattern = "api.cozy.cloud/*"
+# zone_id = "your-zone-id"
+
+# Environment variables
+[vars]
+ENVIRONMENT = "production"
+
+# KV namespace bindings (if needed)
+# [[kv_namespaces]]
+# binding = "KV"
+# id = "your-kv-namespace-id"
+
+# Durable Object bindings (if needed)
+# [[durable_objects.bindings]]
+# name = "DO"
+# class_name = "DurableObject"
+
+# R2 bucket bindings (if needed)
+# [[r2_buckets]]
+# binding = "BUCKET"
+# bucket_name = "your-bucket-name"

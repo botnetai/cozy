@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "wrangler dev",
     "build": "tsc --noEmit",
+    "build:worker": "node build.js",
     "deploy": "wrangler deploy",
+    "deploy:prod": "bun run build:worker && wrangler deploy --env production",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write ."
@@ -23,7 +25,8 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250122.0",
     "@cozy/tsconfig": "workspace:*",
+    "esbuild": "^0.25.5",
     "typescript": "^5.8.3",
-    "wrangler": "^3.99.0"
+    "wrangler": "^4.21.2"
   }
 }

@@ -2,7 +2,6 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 import { appRouter } from './trpc/router'
-import { createContext } from './trpc/context'
 import type { Env, ClaudeCodeRequest, CodeExecutionRequest, FileOperation, ContainerResponse } from './types'
 
 const app = new Hono<{ Bindings: Env }>()
@@ -30,14 +29,12 @@ app.all('/trpc/*', async (c) => {
   })
 })
 
-// Claude Code execution endpoint
+// Claude Code execution endpoint (simplified - returns mock response)
 app.post('/container/claude', async (c) => {
   const request = await c.req.json<ClaudeCodeRequest>()
   
   try {
-    // TODO: Get API key from user session/database
     const apiKey = c.req.header('X-Anthropic-Api-Key') || ''
-    const workspaceId = c.req.header('X-Workspace-Id') || 'default'
     
     if (!apiKey) {
       return c.json<ContainerResponse>({ 
@@ -47,24 +44,13 @@ app.post('/container/claude', async (c) => {
       }, 401)
     }
 
-    // Get Durable Object ID
-    const id = c.env.CONTAINER.idFromName(workspaceId)
-    const container = c.env.CONTAINER.get(id)
-    
-    // Forward request to Durable Object
-    const response = await container.fetch(new Request('http://container/claude', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ prompt: request.prompt, apiKey })
-    }))
-    
-    const result = await response.json()
-    
+    // Mock response for now
     return c.json<ContainerResponse>({ 
       success: true, 
-      data: result,
+      data: { 
+        output: `Mock response: Would execute Claude Code with prompt: "${request.prompt}"`,
+        note: 'Container support requires Docker to be running locally for deployment'
+      },
       timestamp: new Date().toISOString()
     })
   } catch (error) {
@@ -76,32 +62,20 @@ app.post('/container/claude', async (c) => {
   }
 })
 
-// Code execution endpoint
+// Code execution endpoint (simplified)
 app.post('/container/execute', async (c) => {
   const request = await c.req.json<CodeExecutionRequest>()
   
   try {
-    const apiKey = c.req.header('X-Anthropic-Api-Key') || ''
-    const workspaceId = c.req.header('X-Workspace-Id') || 'default'
-    
-    // Get Durable Object ID
-    const id = c.env.CONTAINER.idFromName(workspaceId)
-    const container = c.env.CONTAINER.get(id)
-    
-    // Forward request to Durable Object
-    const response = await container.fetch(new Request('http://container/execute', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ language: request.language, code: request.code })
-    }))
-    
-    const result = await response.json()
-    
+    // Mock response for now
     return c.json<ContainerResponse>({ 
       success: true, 
-      data: result,
+      data: {
+        stdout: `Mock output: Would execute ${request.language} code`,
+        stderr: '',
+        exitCode: 0,
+        note: 'Container support requires Docker to be running locally for deployment'
+      },
       timestamp: new Date().toISOString()
     })
   } catch (error) {
@@ -113,28 +87,42 @@ app.post('/container/execute', async (c) => {
   }
 })
 
-// File operations endpoint
+// File operations endpoint (simplified)
 app.post('/container/file', async (c) => {
   const request = await c.req.json<FileOperation>()
   
   try {
-    const apiKey = c.req.header('X-Anthropic-Api-Key') || ''
-    const workspaceId = c.req.header('X-Workspace-Id') || 'default'
+    // Mock response for now
+    let result: any
     
-    // Get Durable Object ID
-    const id = c.env.CONTAINER.idFromName(workspaceId)
-    const container = c.env.CONTAINER.get(id)
-    
-    // Forward request to Durable Object
-    const response = await container.fetch(new Request('http://container/file', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(request)
-    }))
-    
-    const result = await response.json()
+    switch (request.operation) {
+      case 'read':
+        result = { 
+          content: 'Mock file content',
+          note: 'Container support requires Docker to be running locally for deployment'
+        }
+        break
+      case 'write':
+        result = { 
+          message: 'Mock: File would be written',
+          note: 'Container support requires Docker to be running locally for deployment'
+        }
+        break
+      case 'list':
+        result = { 
+          files: ['mock-file1.txt', 'mock-file2.js'],
+          note: 'Container support requires Docker to be running locally for deployment'
+        }
+        break
+      case 'mkdir':
+        result = { 
+          message: 'Mock: Directory would be created',
+          note: 'Container support requires Docker to be running locally for deployment'
+        }
+        break
+      default:
+        throw new Error('Invalid file operation')
+    }
     
     return c.json<ContainerResponse>({ 
       success: true, 
@@ -149,8 +137,5 @@ app.post('/container/file', async (c) => {
     }, 500)
   }
 })
-
-// Export the Durable Object class
-export { CozySandboxContainer } from './durable-objects/CozySandboxContainer'
 
 export default app

@@ -1,27 +1,28 @@
 name = "cozy-worker"
 main = "src/index.ts"
 compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
 account_id = "599cb66ab5c235bb62eb59dc77ed2f42"
 
 # Custom domain
 route = "api.cozy.cloud/*"
 
-# Enable node compatibility for certain modules
-node_compat = true
-
-# Container bindings configuration
-[[containers]]
-binding = "CONTAINER"
-image = "cozy-sandbox"
-tag = "latest"
-
 # Container configuration
-[containers.limits]
-memory = 1024  # 1 GiB
-cpu = 0.25     # ¼ vCPU
+[[containers]]
+max_instances = 10
+name = "cozy-sandbox"
+class_name = "CozySandboxContainer"
+image = "../../sandbox-image/Dockerfile"
 
-[containers.env]
-NODE_ENV = "production"
+# Durable Object binding for container
+[[durable_objects.bindings]]
+name = "CONTAINER"
+class_name = "CozySandboxContainer"
+
+# Migration for Durable Object
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["CozySandboxContainer"]
 
 # Environment variables
 [vars]

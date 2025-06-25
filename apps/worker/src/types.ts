@@ -1,7 +1,5 @@
-import type { CozyContainer } from './container'
-
 export interface Env {
-  CONTAINER: CozyContainer
+  CONTAINER?: DurableObjectNamespace
   ENVIRONMENT: string
   // KV namespaces
   KV_SESSIONS?: KVNamespace
