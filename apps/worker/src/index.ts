@@ -3,7 +3,7 @@ import { cors } from 'hono/cors'
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
 import { appRouter } from './trpc/router'
 import { createContext } from './trpc/context'
-import { getContainer } from '@cloudflare/containers'
+import { getContainer, loadBalance } from '@cloudflare/containers'
 import type { Env, ClaudeCodeRequest, CodeExecutionRequest, FileOperation, ContainerResponse } from './types'
 
 const app = new Hono<{ Bindings: Env }>()
@@ -25,9 +25,8 @@ app.get('/container/:id', async (c) => {
 
 // Load balancer route
 app.get('/lb', async (c) => {
-  // Simple random selection between 3 containers
-  const randomId = Math.floor(Math.random() * 3)
-  const container = getContainer(c.env.MY_CONTAINER, `lb-${randomId}`)
+  // Load balance across 3 containers
+  const container = await loadBalance(c.env.MY_CONTAINER, 3)
   return await container.fetch(c.req.raw)
 })
 
