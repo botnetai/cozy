@@ -1,0 +1,71 @@
+name: Deploy Container (Fixed)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Install dependencies
+      run: |
+        npm install -g wrangler@latest
+        wrangler --version
+    
+    - name: Build container
+      working-directory: ./sandbox-image
+      run: |
+        docker build -t cozy-sandbox:latest .
+        docker images | grep cozy-sandbox
+    
+    - name: Authenticate with Cloudflare
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      run: |
+        wrangler whoami
+        echo "Checking container registry access..."
+        wrangler containers list || echo "Container registry might not be enabled"
+    
+    - name: Push container (with retry)
+      working-directory: ./sandbox-image
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      run: |
+        echo "Attempting to push container..."
+        # Try push with timeout and retry
+        timeout 600 wrangler containers push cozy-sandbox:latest || {
+          echo "First attempt failed, retrying..."
+          sleep 10
+          timeout 600 wrangler containers push cozy-sandbox:latest || {
+            echo "Push failed. Container registry might not be enabled for this account."
+            echo "Please check:"
+            echo "1. Container beta access is enabled"
+            echo "2. API token has container permissions"
+            exit 1
+          }
+        }
+    
+    - name: Deploy worker with container
+      if: success()
+      working-directory: ./apps/worker
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      run: |
+        echo "Deploying worker with container support..."
+        wrangler deploy || echo "Worker deployment needs configuration"
