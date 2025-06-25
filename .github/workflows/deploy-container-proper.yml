@@ -23,6 +23,11 @@ jobs:
       run: |
         npm install -g wrangler@latest
     
+    - name: Install worker dependencies
+      working-directory: ./apps/worker
+      run: |
+        npm install --force
+    
     - name: Check Docker
       run: |
         docker --version

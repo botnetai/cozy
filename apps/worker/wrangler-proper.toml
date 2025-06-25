@@ -7,13 +7,13 @@ account_id = "599cb66ab5c235bb62eb59dc77ed2f42"
 # Container configuration
 [[containers]]
 max_instances = 10
-name = "cozy-sandbox"
+name = "cozy-containers"
 class_name = "CozySandboxContainer"
-image = "../../sandbox-image/Dockerfile"
+image = "../../sandbox-image/"
 
 # Durable Object binding for container
 [[durable_objects.bindings]]
-name = "CONTAINER"
+name = "MY_CONTAINER"
 class_name = "CozySandboxContainer"
 
 # Migration for Durable Object

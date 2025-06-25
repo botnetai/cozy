@@ -2,11 +2,12 @@ import { Container } from '@cloudflare/containers';
 
 export class CozySandboxContainer extends Container {
   defaultPort = 8080;
-  sleepAfter = '5m'; // Sleep after 5 minutes of inactivity
+  sleepAfter = '10s'; // Sleep after 10 seconds for testing
   
   envVars = {
     NODE_ENV: 'production',
-    PORT: '8080'
+    PORT: '8080',
+    MESSAGE: 'Cozy Container is running!'
   };
 
   override onStart() {
@@ -19,32 +20,5 @@ export class CozySandboxContainer extends Container {
 
   override onError(error: unknown) {
     console.log('Container error:', error);
-  }
-
-  // Custom method to execute Claude prompts
-  async executeClaude(prompt: string, apiKey: string) {
-    const response = await this.containerFetch('/claude', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Anthropic-Api-Key': apiKey
-      },
-      body: JSON.stringify({ prompt })
-    });
-    
-    return response;
-  }
-
-  // Custom method to execute code
-  async executeCode(language: string, code: string) {
-    const response = await this.containerFetch('/execute', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ language, code })
-    });
-    
-    return response;
   }
 }

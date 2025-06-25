@@ -15,6 +15,23 @@ app.get('/health', (c) => {
   return c.json({ status: 'ok', environment: c.env.ENVIRONMENT })
 })
 
+// Container routes - direct container access for testing
+app.get('/container/:id', async (c) => {
+  const containerId = c.req.param('id')
+  const id = c.env.MY_CONTAINER.idFromName(containerId)
+  const container = c.env.MY_CONTAINER.get(id)
+  return await container.fetch(c.req.raw)
+})
+
+// Load balancer route
+app.get('/lb', async (c) => {
+  // Simple random selection between 3 containers
+  const randomId = Math.floor(Math.random() * 3)
+  const id = c.env.MY_CONTAINER.idFromName(`lb-${randomId}`)
+  const container = c.env.MY_CONTAINER.get(id)
+  return await container.fetch(c.req.raw)
+})
+
 // tRPC endpoint
 app.all('/trpc/*', async (c) => {
   return fetchRequestHandler({
@@ -48,8 +65,8 @@ app.post('/container/claude', async (c) => {
     }
 
     // Get Durable Object ID
-    const id = c.env.CONTAINER.idFromName(workspaceId)
-    const container = c.env.CONTAINER.get(id)
+    const id = c.env.MY_CONTAINER.idFromName(workspaceId)
+    const container = c.env.MY_CONTAINER.get(id)
     
     // Forward request to Durable Object
     const response = await container.fetch(new Request('http://container/claude', {
@@ -85,8 +102,8 @@ app.post('/container/execute', async (c) => {
     const workspaceId = c.req.header('X-Workspace-Id') || 'default'
     
     // Get Durable Object ID
-    const id = c.env.CONTAINER.idFromName(workspaceId)
-    const container = c.env.CONTAINER.get(id)
+    const id = c.env.MY_CONTAINER.idFromName(workspaceId)
+    const container = c.env.MY_CONTAINER.get(id)
     
     // Forward request to Durable Object
     const response = await container.fetch(new Request('http://container/execute', {
@@ -122,8 +139,8 @@ app.post('/container/file', async (c) => {
     const workspaceId = c.req.header('X-Workspace-Id') || 'default'
     
     // Get Durable Object ID
-    const id = c.env.CONTAINER.idFromName(workspaceId)
-    const container = c.env.CONTAINER.get(id)
+    const id = c.env.MY_CONTAINER.idFromName(workspaceId)
+    const container = c.env.MY_CONTAINER.get(id)
     
     // Forward request to Durable Object
     const response = await container.fetch(new Request('http://container/file', {
@@ -150,7 +167,7 @@ app.post('/container/file', async (c) => {
   }
 })
 
-// Export the Durable Object class
-export { CozySandboxContainer } from './durable-objects/CozySandboxContainer'
+// Export the Container class from the container module
+export { CozySandboxContainer } from './container'
 
 export default app

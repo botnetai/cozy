@@ -1,11 +1,9 @@
 export interface Env {
-  CONTAINER?: DurableObjectNamespace
+  MY_CONTAINER: DurableObjectNamespace
   ENVIRONMENT: string
   // KV namespaces
   KV_SESSIONS?: KVNamespace
   KV_USERS?: KVNamespace
-  // Durable Objects
-  DO_CONTAINER?: DurableObjectNamespace
   // R2 buckets
   R2_WORKSPACES?: R2Bucket
   // Secrets
